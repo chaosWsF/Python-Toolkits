@@ -39,6 +39,23 @@ def download_media(url, folder, filename):
         print(f"❌ Failed to download: {url}")
 
 
+def load_credentials(filepath="pwd"):
+    credentials = {}
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Credentials file '{filepath}' not found.")
+
+    with open(filepath, "r") as f:
+        for line in f:
+            if "=" in line:
+                key, value = line.strip().split("=", 1)
+                credentials[key.strip()] = value.strip()
+
+    if "USERNAME" not in credentials or "PASSWORD" not in credentials:
+        raise ValueError("Credentials file must contain USERNAME and PASSWORD.")
+
+    return credentials["USERNAME"], credentials["PASSWORD"]
+
+
 def download_saved_posts(username, password, folder="saved_posts"):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)    # Use non-headless for better stealth
@@ -127,6 +144,5 @@ def download_saved_posts(username, password, folder="saved_posts"):
         browser.close()
 
 if __name__ == "__main__":
-    USERNAME = "your_instagram_username"
-    PASSWORD = "your_instagram_password"
+    USERNAME, PASSWORD = load_credentials("pwd")
     download_saved_posts(USERNAME, PASSWORD)
