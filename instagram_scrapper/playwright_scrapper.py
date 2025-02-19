@@ -32,9 +32,12 @@ def download_media(url, folder, filename):
     """🔹 Function to Download Media"""
     response = requests.get(url, stream=True)
     if response.status_code == 200:
-        with open(os.path.join(folder, filename), "wb") as file:
+        os.makedirs(folder, exist_ok=True)
+        file_path = os.path.join(folder, filename)
+        with open(file_path, "wb") as f:
             for chunk in tqdm(response.iter_content(1024), desc=f"Downloading {filename}", unit="KB"):
-                file.write(chunk)
+                f.write(chunk)
+        print(f"✅ Downloaded: {file_path}")
     else:
         print(f"❌ Failed to download: {url}")
 

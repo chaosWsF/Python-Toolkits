@@ -6,10 +6,8 @@ def test_instagram_login():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False, args=['--ignore-certificate-errors'])
         context = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            locale="en-US",
-            ignore_https_errors=True,
-            java_script_enabled=True
+            viewport={"width": 375, "height": 812},
+            user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
         )
         page = context.new_page()
 
