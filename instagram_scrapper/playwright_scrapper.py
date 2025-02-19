@@ -1,19 +1,35 @@
 import os
+import random
 import time
+import json
 import requests
 from tqdm import tqdm
 from playwright.sync_api import sync_playwright
+from playwright_stealth import stealth
 
-# 🔹 Your Instagram Credentials
-USERNAME = "your_username"
-PASSWORD = "your_password"
 
-# 🔹 Folder to Save Media
-SAVE_FOLDER = "Instagram_Saved"
-os.makedirs(SAVE_FOLDER, exist_ok=True)
+def human_delay(a=1, b=3):
+    """Introduce random delays to mimic human behavior."""
+    time.sleep(random.uniform(a, b))
 
-# 🔹 Function to Download Media
-def download_file(url, folder, filename):
+
+def save_cookies(context, path="cookies.json"):
+    cookies = context.cookies()
+    with open(path, "w") as f:
+        json.dump(cookies, f)
+
+
+def load_cookies(context, path="cookies.json"):
+    if os.path.exists(path):
+        with open(path, "r") as f:
+            cookies = json.load(f)
+        context.add_cookies(cookies)
+        return True
+    return False
+
+
+def download_media(url, folder, filename):
+    """🔹 Function to Download Media"""
     response = requests.get(url, stream=True)
     if response.status_code == 200:
         with open(os.path.join(folder, filename), "wb") as file:
@@ -22,72 +38,95 @@ def download_file(url, folder, filename):
     else:
         print(f"❌ Failed to download: {url}")
 
-# 🔹 Start Playwright
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)  # Set headless=True to run without UI
-    context = browser.new_context()
-    page = context.new_page()
 
-    # 🔹 Open Instagram Login Page
-    page.goto("https://www.instagram.com/accounts/login/")
-    time.sleep(5)
+def download_saved_posts(username, password, folder="saved_posts"):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)    # Use non-headless for better stealth
+        context = browser.new_context()
+        page = context.new_page()
 
-    # 🔹 Log In to Instagram
-    page.fill("input[name='username']", USERNAME)
-    page.fill("input[name='password']", PASSWORD)
-    page.press("input[name='password']", "Enter")
-    time.sleep(10)
+        # Apply stealth to avoid detection
+        stealth(page)
 
-    # 🔹 Navigate to Saved Posts
-    page.goto(f"https://www.instagram.com/{USERNAME}/saved/")
-    time.sleep(5)
+        # Try loading existing cookies
+        if not load_cookies(context):
+            # Navigate to Instagram login
+            page.goto("https://www.instagram.com/accounts/login/")
+            human_delay(3, 5)
 
-    # 🔹 Scroll to Load More Posts
-    POST_LIMIT = 50  # Adjust based on number of saved posts
-    last_height = page.evaluate("document.body.scrollHeight")
+            # Enter username and password
+            page.fill('input[name="username"]', username, timeout=10000)
+            human_delay()
+            page.fill('input[name="password"]', password)
+            human_delay()
 
-    while True:
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(3)
-        new_height = page.evaluate("document.body.scrollHeight")
-        if new_height == last_height or len(page.locator("article a").all()) >= POST_LIMIT:
-            break
-        last_height = new_height
+            # Click login
+            page.click('button[type="submit"]')
+            page.wait_for_load_state("networkidle")
+            human_delay(5, 7)
 
-    # 🔹 Extract Post URLs
-    post_links = [a.get_attribute("href") for a in page.locator("article a").all()]
-    print(f"🔹 Found {len(post_links)} saved posts.")
+            # Handle "Save Your Login Info?" popup
+            try:
+                page.click("//button[contains(text(), 'Not Now')]")
+                human_delay()
+            except:
+                pass
 
-    # 🔹 Visit Each Post and Download All Media
-    for index, post_url in enumerate(post_links):
-        page.goto(post_url)
-        time.sleep(5)
+            # Handle "Turn on Notifications" popup
+            try:
+                page.click("//button[contains(text(), 'Not Now')]")
+                human_delay()
+            except:
+                pass
 
-        media_count = 0
+            # Save cookies after successful login
+            save_cookies(context)
 
-        while True:
-            media_count += 1
+        # Go to saved posts
+        page.goto(f"https://www.instagram.com/{username}/saved/")
+        page.wait_for_load_state("networkidle")
+        human_delay(3, 5)
 
-            # Download Images
-            images = page.locator("article img").all()
-            for img in images:
-                img_url = img.get_attribute("src")
-                filename = f"post_{index + 1}_image_{media_count}.jpg"
-                download_file(img_url, SAVE_FOLDER, filename)
+        # Scroll to load saved posts
+        last_height = page.evaluate("document.body.scrollHeight")
+        for _ in tqdm(range(10), desc="Scrolling through saved posts"):
+            page.mouse.wheel(0, last_height)
+            human_delay(2, 4)
+            new_height = page.evaluate("document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
 
-            # Download Videos
-            videos = page.locator("article video").all()
-            for vid in videos:
-                vid_url = vid.get_attribute("src")
-                filename = f"post_{index + 1}_video_{media_count}.mp4"
-                download_file(vid_url, SAVE_FOLDER, filename)
+        # Extract post links
+        post_links = page.query_selector_all('article a')
+        post_urls = [link.get_attribute('href') for link in post_links]
 
-            # Check for "Next" button in carousel
-            if page.locator("button[aria-label='Next']").count() > 0:
-                page.click("button[aria-label='Next']")
-                time.sleep(3)
-            else:
-                break  # No more media in carousel
+        print(f"Found {len(post_urls)} saved posts.")
 
-    print("✅ All saved posts downloaded!")
-    browser.close()
+        # Create download directory
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        # Download media from each post
+        for idx, post_url in enumerate(tqdm(post_urls, desc="Downloading posts")):
+            page.goto(f"https://www.instagram.com{post_url}")
+            page.wait_for_load_state("networkidle")
+            human_delay(2, 4)
+
+            # Extract image/video URLs
+            media_elements = page.query_selector_all('img, video')
+            for i, media in enumerate(media_elements):
+                media_url = media.get_attribute('src')
+                if media_url:
+                    extension = 'mp4' if 'video' in media.evaluate('el => el.tagName').lower() else 'jpg'
+                    filename = f"post_{idx + 1}_{i + 1}.{extension}"
+                    download_media(media_url, folder, filename)
+
+        print("✅ Download completed!")
+
+        browser.close()
+
+if __name__ == "__main__":
+    USERNAME = "your_instagram_username"
+    PASSWORD = "your_instagram_password"
+    download_saved_posts(USERNAME, PASSWORD)
