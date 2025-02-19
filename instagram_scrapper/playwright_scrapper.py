@@ -5,7 +5,7 @@ import json
 import requests
 from tqdm import tqdm
 from playwright.sync_api import sync_playwright
-from playwright_stealth import stealth
+from playwright_stealth import stealth_sync
 
 
 def human_delay(a=1, b=3):
@@ -58,12 +58,18 @@ def load_credentials(filepath="pwd"):
 
 def download_saved_posts(username, password, folder="saved_posts"):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)    # Use non-headless for better stealth
-        context = browser.new_context()
+        browser = p.chromium.launch(headless=False, args=['--ignore-certificate-errors'])    # Use non-headless for better stealth
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            locale="en-US",
+            viewport={"width": 1280, "height": 800},
+            ignore_https_errors=True,
+            java_script_enabled=True
+        )
         page = context.new_page()
 
         # Apply stealth to avoid detection
-        stealth(page)
+        stealth_sync(page)
 
         # Try loading existing cookies
         if not load_cookies(context):
@@ -84,6 +90,7 @@ def download_saved_posts(username, password, folder="saved_posts"):
 
             # Handle "Save Your Login Info?" popup
             try:
+                page.wait_for_selector("//button[contains(text(), 'Not Now')]", timeout=5000)
                 page.click("//button[contains(text(), 'Not Now')]")
                 human_delay()
             except:
@@ -91,6 +98,7 @@ def download_saved_posts(username, password, folder="saved_posts"):
 
             # Handle "Turn on Notifications" popup
             try:
+                page.wait_for_selector("//button[contains(text(), 'Not Now')]", timeout=5000)
                 page.click("//button[contains(text(), 'Not Now')]")
                 human_delay()
             except:
