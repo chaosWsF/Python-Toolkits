@@ -1,6 +1,6 @@
-from PIL import Image
 import os
 import re
+from PIL import Image
 
 
 def natural_sort_key(s):
@@ -8,8 +8,8 @@ def natural_sort_key(s):
     match = re.search(r'_(\d+)\.', s)    # Look for the last number before the file extension
     if match:
         # Return a tuple with the filename and the number part after the last underscore as an integer for sorting
-        return (s, int(match.group(1)))
-    return (s, 0)    # If no number is found, return the filename and 0 (for safety)
+        return int(match.group(1))
+    return 0    # If no number is found, return the filename and 0 (for safety)
 
 
 def combine_images_row(images, output_path='combined_row.png'):
