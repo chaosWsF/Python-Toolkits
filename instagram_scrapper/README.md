@@ -8,8 +8,6 @@
 
 `public_scrapper.py` still does not work properly.
 
-Usage: 
-
 `python public_scrapper.py ["https://www.instagram.com/p/Cxyz12345/"] -o [insta_media]`
 
 ## Instaloader
