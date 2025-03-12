@@ -1,10 +1,17 @@
-from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO
 import threading
 import os
+import traceback
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, jsonify
+from flask_socketio import SocketIO
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import sanitize_filename
-import traceback
+
+dotenv_path = os.path.join(os.path.dirname(__file__), 'video_scrapper', '.env')
+load_dotenv(dotenv_path)
+
+secret_key = os.getenv('FLASK_SECRET_KEY')
+port = int(os.getenv('FLASK_PORT', 5000))    # Default to 5000 if not set
 
 # Initialize Flask app and SocketIO
 app = Flask(__name__)
