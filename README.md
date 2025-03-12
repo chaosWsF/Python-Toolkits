@@ -7,3 +7,7 @@
 ## Instagram Scrapper
 
 `instagram_scrapper`
+
+## Video Scrapper
+
+`app.py`

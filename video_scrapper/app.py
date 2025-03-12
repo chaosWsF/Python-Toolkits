@@ -71,7 +71,9 @@ def download_video(url, aria2c_args):
             safe_title = sanitize_filename(title, restricted=True)
             dir_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'Videos', safe_title)
             os.makedirs(dir_path, exist_ok=True)
-            ydl.params['outtmpl'] = os.path.join(dir_path, '%(title)s.%(ext)s')
+            ydl_opts['outtmpl'] = {
+                'default': os.path.join(dir_path, '%(title)s.%(ext)s')
+            }
             
             ydl.download([url])
         
