@@ -15,7 +15,7 @@ port = int(os.getenv('FLASK_PORT', 5000))    # Default to 5000 if not set
 
 # Initialize Flask app and SocketIO
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here'  # Replace with a secure key
+app.config['SECRET_KEY'] = secret_key
 socketio = SocketIO(app)
 
 # Global variables to track progress and logs
@@ -105,4 +105,4 @@ def start_download():
     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, port=port)
