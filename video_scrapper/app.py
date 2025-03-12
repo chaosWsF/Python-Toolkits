@@ -19,7 +19,7 @@ app.config['SECRET_KEY'] = secret_key
 socketio = SocketIO(app)
 
 # Global variables to track progress and logs
-progress_data = {'progress': 0, 'logs': []}
+progress_data = {'progress': 0, 'logs': [], 'aria2c_output': []}
 download_thread = None
 
 
@@ -27,6 +27,7 @@ class MyLogger:
     """Custom logger class to capture messages"""
     def __init__(self):
         self.messages = []
+        self.aria2c_output = []
 
     def debug(self, msg):
         pass    # Ignore debug messages
@@ -36,6 +37,10 @@ class MyLogger:
 
     def error(self, msg):
         self.messages.append(msg)
+    
+    def aria2c_log(self, msg):
+        self.aria2c_output.append(msg)
+        socketio.emit('aria2c_output', {'output': msg})
 
 
 def progress_hook(d):
@@ -58,6 +63,7 @@ def download_video(url, aria2c_args):
     global progress_data
     progress_data['progress'] = 0
     progress_data['logs'] = []
+    progress_data['aria2c_output'] = []
 
     logger = MyLogger()
     ydl_opts = {
@@ -65,6 +71,7 @@ def download_video(url, aria2c_args):
         'progress_hooks': [progress_hook],
         'external_downloader': 'aria2c',
         'external_downloader_args': aria2c_args.split(),
+        'verbose': True
     }
     
     try:
@@ -88,6 +95,7 @@ def download_video(url, aria2c_args):
         progress_data['progress'] = 100
         socketio.emit('progress_update', {'progress': 100})
         socketio.emit('logs_update', {'logs': progress_data['logs']})
+        socketio.emit('aria2c_output', {'output': 'Download finished'})
 
 
 @app.route('/')

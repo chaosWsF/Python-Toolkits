@@ -2,11 +2,11 @@
 
 ## Using yt-dlp+aria2c for m3u8
 
-`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 16 -x 1"`
+`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 8 -x 1"`
 
 Handling miscellaneous outputs from aria2 via 
 
-`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 8 -x 1 --summary-interval=1 --console-log-level=info"`
+`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 16 -x 1 --summary-interval=1 --console-log-level=info"`
 
 If cookies are required, 
 
