@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Download m3u8</title>
+    <!-- Load Socket.IO client library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        // Connect to SocketIO server
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Update progress bar and percentage
+        socket.on('progress_update', function(data) {
+            document.getElementById('progress').value = data.progress;
+            document.getElementById('progress_text').innerText = data.progress + '%';
+        });
+
+        // Update logs section
+        socket.on('logs_update', function(data) {
+            var logs_div = document.getElementById('logs');
+            logs_div.innerHTML = '';
+            data.logs.forEach(function(log, index) {
+                logs_div.innerHTML += '<p>' + (index + 1) + '. ' + log + '</p>';
+            });
+        });
+
+        // Start download when form is submitted
+        function startDownload() {
+            var url = document.getElementById('url').value;
+            var aria2c_args = document.getElementById('aria2c_args').value;
+            fetch('/start_download', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'url=' + encodeURIComponent(url) + '&aria2c_args=' + encodeURIComponent(aria2c_args)
+            }).then(response => response.json()).then(data => {
+                if (data.status === 'success') {
+                    alert('Download started');
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Download m3u8 Playlist</h1>
+    <form onsubmit="event.preventDefault(); startDownload();">
+        <label for="url">m3u8 URL:</label><br>
+        <input type="text" id="url" name="url" required style="width: 300px;"><br>
+        <label for="aria2c_args">aria2c Arguments:</label><br>
+        <input type="text" id="aria2c_args" name="aria2c_args" 
+               value="-c -j 16 -x 1 --summary-interval=0" style="width: 300px;"><br>
+        <button type="submit">Start Download</button>
+    </form>
+    <h2>Download Progress</h2>
+    <progress id="progress" value="0" max="100"></progress>
+    <span id="progress_text">0%</span>
+    <h2>Logs</h2>
+    <div id="logs"></div>
+</body>
+</html>

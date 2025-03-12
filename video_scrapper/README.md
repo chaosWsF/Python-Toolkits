@@ -20,9 +20,9 @@ The m3u8 playlist hides video streams inside PNGs: [more](https://github.com/yt-
 
 ### Features
 
-Adding the tool that
+Adding the tool built by Flask as webUI that 
 
 + has a bar of the download progress and the percentage of downloaded part
-+ formats the output in command line, catches exception and other outputs and enumerate them with 1,2,3,...
-+ passes aria2c arguments with prasing CLI input
++ has a log section to catch exception and other outputs, enumerating them (1,2,3,...)
++ has a input bar to accept aria2c arguments
 + makes a folder for downloaded files under ~/Downloads/Videos, which needs to check folder existence
