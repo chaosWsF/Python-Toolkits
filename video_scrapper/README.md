@@ -27,6 +27,6 @@ The m3u8 playlist hides video streams inside PNGs: [more](https://github.com/yt-
    + has a input bar to accept aria2c arguments
    + makes a folder for downloaded files under ~/Downloads/Videos, which needs to check folder existence
 
-   **Limits**: 
+   **Issues**: 
    
-   + It does not work for live stream.
+   + Try to output logs with aria2c outputs.

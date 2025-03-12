@@ -11,8 +11,15 @@
 
         // Update progress bar and percentage
         socket.on('progress_update', function(data) {
-            document.getElementById('progress').value = data.progress;
-            document.getElementById('progress_text').innerText = data.progress + '%';
+            var progressBar = document.getElementById('progress');
+            var progressText = document.getElementById('progress_text');
+            if (data.progress === 'unknown') {
+                progressBar.removeAttribute('value');    // Show indeterminate state
+                progressText.innerText = 'Downloading...';
+            } else {
+                progressBar.value = data.progress;
+                progressText.innerText = data.progress + '%';
+            }
         });
 
         // Update logs section
@@ -49,7 +56,7 @@
         <input type="text" id="url" name="url" required style="width: 300px;"><br>
         <label for="aria2c_args">aria2c Arguments:</label><br>
         <input type="text" id="aria2c_args" name="aria2c_args" 
-               value="-c -j 16 -x 1 --summary-interval=0" style="width: 300px;"><br>
+               value="-c -j 16 -x 1" style="width: 300px;"><br>
         <button type="submit">Start Download</button>
     </form>
     <h2>Download Progress</h2>
