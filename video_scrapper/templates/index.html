@@ -21,7 +21,14 @@
                 progressText.innerText = data.progress + '%';
             }
         });
-
+        
+        // Update aria2c output section
+        socket.on('aria2c_output', function(data) {
+            var aria2c_pre = document.getElementById('aria2c_pre');
+            aria2c_pre.innerText += data.output + '\n';
+            aria2c_pre.parentNode.scrollTop = aria2c_pre.parentNode.scrollHeight;    // Auto-scroll to bottom
+        });
+        
         // Update logs section
         socket.on('logs_update', function(data) {
             var logs_div = document.getElementById('logs');
@@ -63,7 +70,9 @@
     <progress id="progress" value="0" max="100"></progress>
     <span id="progress_text">0%</span>
     <h2>aria2c Output</h2>
-    <div id="aria2c_output" style="max-height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <div id="aria2c_output" style="max-height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
+        <pre id="aria2c_pre"></pre>
+    </div>
     <h2>Logs</h2>
     <div id="logs"></div>
 </body>

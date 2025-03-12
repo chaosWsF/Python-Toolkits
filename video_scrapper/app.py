@@ -1,5 +1,7 @@
-import threading
 import os
+import sys
+import re
+import threading
 import traceback
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
@@ -7,8 +9,7 @@ from flask_socketio import SocketIO
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import sanitize_filename
 
-dotenv_path = os.path.join(os.path.dirname(__file__), 'video_scrapper', '.env')
-load_dotenv(dotenv_path)
+load_dotenv()
 
 secret_key = os.getenv('FLASK_SECRET_KEY')
 port = int(os.getenv('FLASK_PORT', 5000))    # Default to 5000 if not set
@@ -21,6 +22,21 @@ socketio = SocketIO(app)
 # Global variables to track progress and logs
 progress_data = {'progress': 0, 'logs': [], 'aria2c_output': []}
 download_thread = None
+
+
+class SocketIOStream:
+    """Custom stream class to capture output and send it via SocketIO"""
+    def __init__(self, socketio):
+        self.socketio = socketio
+        self.ansi_escape = re.compile(r'\x1B[@-_][0-?]*[ -/]*[@-~]')    # Regex for ANSI codes
+
+    def write(self, msg):
+        clean_msg = self.ansi_escape.sub('', msg).strip()
+        if clean_msg:
+            self.socketio.emit('aria2c_output', {'output': clean_msg})
+
+    def flush(self):
+        pass
 
 
 class MyLogger:
@@ -74,28 +90,38 @@ def download_video(url, aria2c_args):
         'verbose': True
     }
     
+    output_stream = SocketIOStream(socketio)
+    original_stdout = sys.stdout
+    original_stderr = sys.stderr
+    sys.stdout = output_stream
+    sys.stderr = output_stream
+
     try:
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            title = info['title']
+            title = info.get('title', 'unknown_video')    # Fallback if title is missing
             safe_title = sanitize_filename(title, restricted=True)
             dir_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'Videos', safe_title)
             os.makedirs(dir_path, exist_ok=True)
-            ydl_opts['outtmpl'] = {
-                'default': os.path.join(dir_path, '%(title)s.%(ext)s')
-            }
-            
-            ydl.download([url])
         
+        ydl_opts['outtmpl'] = {
+            'default': os.path.join(dir_path, '%(title)s.%(ext)s')
+        }
+        
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+    
         progress_data['logs'].append("Download completed successfully.")
     except Exception as e:
         progress_data['logs'].append(f"Download failed with exception: {str(e)}")
         progress_data['logs'].append(traceback.format_exc())
     finally:
+        sys.stdout = original_stdout
+        sys.stderr = original_stderr
         progress_data['progress'] = 100
         socketio.emit('progress_update', {'progress': 100})
-        socketio.emit('logs_update', {'logs': progress_data['logs']})
         socketio.emit('aria2c_output', {'output': 'Download finished'})
+        socketio.emit('logs_update', {'logs': progress_data['logs']})
 
 
 @app.route('/')
