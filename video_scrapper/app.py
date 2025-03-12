@@ -44,10 +44,13 @@ def progress_hook(d):
     if d['status'] == 'downloading':
         fragment_index = d.get('fragment_index', 0)
         total_fragments = d.get('total_fragments', 0)
-        if total_fragments:
+        if total_fragments > 0:
             progress = int((fragment_index / total_fragments) * 100)
             progress_data['progress'] = progress
             socketio.emit('progress_update', {'progress': progress})
+        else:
+            socketio.emit('progress_update', {'progress': 'unknown'})
+            print("Progress unknown - total fragments not available")
 
 
 def download_video(url, aria2c_args):

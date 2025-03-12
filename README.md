@@ -6,7 +6,7 @@
 
 ## Instagram Scrapper
 
-`instagram_scrapper`
+instaloader
 
 ## Video Scrapper
 

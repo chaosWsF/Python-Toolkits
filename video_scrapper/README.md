@@ -4,7 +4,7 @@
 
 Hiding miscellaneous outputs from aria2 
 
-`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 16 -x 1 --summary-interval=0"`
+`yt-dlp <m3u8_URL> --downloader aria2c --downloader-args "-c -j 8 -x 1 --summary-interval=0"`
 
 If cookies are required, 
 
@@ -18,11 +18,15 @@ For livestream,
 
 The m3u8 playlist hides video streams inside PNGs: [more](https://github.com/yt-dlp/yt-dlp/issues/4381)
 
-### Features
+### Tools
 
-Adding the tool built by Flask as webUI that 
+1. Adding the tool `app.py` built by Flask as webUI that 
 
-+ has a bar of the download progress and the percentage of downloaded part
-+ has a log section to catch exception and other outputs, enumerating them (1,2,3,...)
-+ has a input bar to accept aria2c arguments
-+ makes a folder for downloaded files under ~/Downloads/Videos, which needs to check folder existence
+   + has a bar of the download progress and the percentage of downloaded part
+   + has a log section to catch exception and other outputs, enumerating them (1,2,3,...)
+   + has a input bar to accept aria2c arguments
+   + makes a folder for downloaded files under ~/Downloads/Videos, which needs to check folder existence
+
+   **Limits**: 
+   
+   + It does not work for live stream.
