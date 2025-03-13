@@ -1,5 +1,7 @@
 # Python Toolkits
 
+Use branches to separate features and pull requests to review changes before merging.
+
 ## Password Generator
 
 ```
