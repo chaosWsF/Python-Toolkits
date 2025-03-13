@@ -49,7 +49,8 @@ def download_video(url, name, aria2c_args):
 def video_links_generator(file_path):
     """Generator function to yield name and link from a tab-separated CSV file."""
     with open(file_path, mode='r', newline='', encoding='utf-8') as video_links:
-        links_reader = csv.DictReader(video_links, delimiter='\t')
+        links_reader = csv.DictReader(video_links)
+        # links_reader = csv.DictReader(video_links, delimiter='\t')
         yield from ((row['Name'], row['Link']) for row in links_reader)
 
 if __name__ == '__main__':
