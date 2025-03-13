@@ -31,3 +31,6 @@ A Flask webUI `app.py` + `templates/index.html`
 
 + Run `get_secret_key.py` to get secret key
 + Record `FLASK_SECRET_KEY` and `FLASK_PORT` in `.env`
+
+## Image Scrapper
+

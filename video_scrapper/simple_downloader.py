@@ -1,6 +1,7 @@
 import os
 import csv
 import logging
+from functools import lru_cache
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import sanitize_filename
 
@@ -46,12 +47,17 @@ def download_video(url, name, aria2c_args):
         logging.error(f"Download failed with exception: {e}")
 
 
-def video_links_generator(file_path):
+@lru_cache(maxsize=None)
+def cached_video_links_generator(file_path):
     """Generator function to yield name and link from a tab-separated CSV file."""
     with open(file_path, mode='r', newline='', encoding='utf-8') as video_links:
         links_reader = csv.DictReader(video_links)
         # links_reader = csv.DictReader(video_links, delimiter='\t')
-        yield from ((row['Name'], row['Link']) for row in links_reader)
+        return list((row['Name'], row['Link']) for row in links_reader)
+
+
+def video_links_generator(file_path):
+    yield from cached_video_links_generator(file_path)
 
 if __name__ == '__main__':
     aria2c_args = '-c -j 16 -x 1'
