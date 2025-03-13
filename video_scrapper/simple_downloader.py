@@ -4,11 +4,13 @@ import logging
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import sanitize_filename
 
+working_dir = 'video_scrapper'
+logs_path = os.path.join(working_dir, 'download.log')
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('download.log'),    # Log to file
+        logging.FileHandler(logs_path),    # Log to file
         logging.StreamHandler()    # Log to console
     ]
 )
@@ -52,6 +54,6 @@ def video_links_generator(file_path):
 
 if __name__ == '__main__':
     aria2c_args = '-c -j 16 -x 1'
-
-    for name, url in video_links_generator('video.csv'):
-        download_video(url, aria2c_args)
+    video_list = os.path.join(working_dir, 'video.csv')
+    for name, url in video_links_generator(video_list):
+        download_video(url, name, aria2c_args)
