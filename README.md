@@ -1,13 +1,15 @@
 # Python Toolkits
 
-Use branches to separate features and pull requests to review changes before merging.
+- Branches
+- Pull requests
+- Tag for stable version
 
 ## Password Generator
 
 ```
 python pwd_generator.py
 python pwd_generator.py --length 12
-python .\pwd_generator.py --length 18 --symbols --lowercase
+python pwd_generator.py --length 18 --symbols --lowercase
 ```
 
 ## Instagram Scrapper
