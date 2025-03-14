@@ -1,8 +1,10 @@
 # Python Toolkits
 
-- Branches
-- Pull requests
-- Tag for stable version
+## Installation
+- Python: `pip install -r requirements.txt`
+- ffmpeg: 
+  - macOS: `brew install ffmpeg`
+  - Windows: `winget install Gyan.FFmpeg`
 
 ## Password Generator
 
