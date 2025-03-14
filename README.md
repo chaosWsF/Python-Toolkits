@@ -1,42 +1,53 @@
 # Python Toolkits
 
+A collection of Python-based utilities for password generation, web scraping, and media processing. Detailed documentation, including setup and usage guides, is available in the [Wiki](https://github.com/chaosWsF/Python-Toolkits/wiki).
+
 ## Installation
-- Python: `pip install -r requirements.txt`
-- ffmpeg: 
-  - macOS: `brew install ffmpeg`
-  - Windows: `winget install Gyan.FFmpeg`
 
-## Password Generator
+1. **Prerequisites**:
+   - Python >= 3.9
+   - `ffmpeg` >= 6.0:
+     - **macOS**: `brew install ffmpeg`
+     - **Windows**: `winget install Gyan.FFmpeg`
 
-```
-python pwd_generator.py
-python pwd_generator.py --length 12
-python pwd_generator.py --length 18 --symbols --lowercase
-```
+2. **Install Python Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Instagram Scrapper
+Verify setup:
+- `python --version`
+- `ffmpeg -version`
 
-```
-instagram_scrapper
-├── downloads
-|   ├── B_K4CykAOtf
-│   │   └── file3.png
-│   ├── file1.png
-│   └── file2.jpg
-├── photos_combiner.py
-├── playwright_scrapper.py   # not working
-├── public_scrapper.py   # not working
-├── pwd
-├── README.md
-└── test_login_page.py
-```
+## Tools
 
-## Video Scrapper
+### Password Generator
+Generate secure passwords with customizable options.
+- **Run**: `python pwd_generator.py --length 12 --symbols --lowercase`
+- **Details**: [Wiki - Password Generator](https://github.com/chaosWsF/Python-Toolkits/wiki/Password-Generator)
 
-A Flask webUI `app.py` + `templates/index.html`
+### Instagram Scrapper
+Download images from Instagram posts.
+- **Structure**:
+  ```
+  instagram_scrapper/
+  ├── downloads/          # Output directory
+  ├── photos_combiner.py  # Combines downloaded images
+  ├── playwright_scrapper.py  # In development
+  ├── public_scrapper.py      # In development
+  └── test_login_page.py      # Test script
+  ```
+- **Details**: [Wiki - Instagram Scrapper](https://github.com/chaosWsF/Python-Toolkits/wiki/Instagram-Scrapper)
 
-+ Run `get_secret_key.py` to get secret key
-+ Record `FLASK_SECRET_KEY` and `FLASK_PORT` in `.env`
+### Video Scrapper
+A Flask-based web UI for downloading videos.
+- **Run**: `python video_scrapper/app.py` (after setup)
+- **Setup**: Requires `FLASK_SECRET_KEY` and `FLASK_PORT` in `.env`. See Wiki.
+- **Details**: [Wiki - Video Scrapper](https://github.com/chaosWsF/Python-Toolkits/wiki/Video-Scrapper)
 
-## Image Scrapper
+### Image Scrapper
+Download images from various sources (in progress).
+- **Details**: [Wiki - Image Scrapper](https://github.com/chaosWsF/Python-Toolkits/wiki/Image-Scrapper)
 
+## Contributing
+Suggestions or issues? Open a [GitHub Issue](https://github.com/chaosWsF/Python-Toolkits/issues).
