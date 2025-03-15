@@ -58,9 +58,9 @@ jobs:
           echo "Latest FFmpeg (Homebrew): $LATEST"
           echo "LATEST=$LATEST" >> $GITHUB_ENV
       - name: Install FFmpeg (Windows)
-          if: matrix.os == 'windows-latest'
-          run: |
-            winget install ffmpeg
+        if: matrix.os == 'windows-latest'
+        run: |
+          winget install ffmpeg
       - name: Check FFmpeg version (Windows)
         if: matrix.os == 'windows-latest'
         run: |
