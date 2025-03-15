@@ -49,5 +49,17 @@ A Flask-based web UI for downloading videos.
 Download images from various sources (in progress).
 - **Details**: [Wiki - Image Scrapper](https://github.com/chaosWsF/Python-Toolkits/wiki/Image-Scrapper)
 
+### Requirements Generator
+Maintain `requirements.txt` for cross-platform compatibility.
+- **Clean Requirements**: Convert Conda file URIs to versioned entries:
+  ```bash
+  python clean_requirements.py
+  ```
+- **Merge Requirements**: Combine Windows 11 and macOS requirements:
+  ```bash
+  python merge_requirements.py
+  ```
+- **Details**: [Wiki - Requirements Generator](https://github.com/chaosWsF/Python-Toolkits/wiki/Requirements-Generator)
+
 ## Contributing
 Suggestions or issues? Open a [GitHub Issue](https://github.com/chaosWsF/Python-Toolkits/issues).
