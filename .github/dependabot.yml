@@ -4,5 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    version-updates: "security-only"
     open-pull-requests-limit: 5
     target-branch: "main"
