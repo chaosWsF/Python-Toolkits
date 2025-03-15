@@ -22,6 +22,7 @@ jobs:
           VERSION=$(cat ffmpeg_version.txt)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Submit FFmpeg dependency snapshot
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -67,9 +68,10 @@ jobs:
       - name: Install FFmpeg (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          winget install ffmpeg
+          winget install -e --id Gyan.FFmpeg --silent
       - name: Check FFmpeg version (Windows)
         if: matrix.os == 'windows-latest'
+        shell: pwsh
         run: |
           $INSTALLED = (ffmpeg -version | Select-Object -First 1).Split()[2]
           echo "INSTALLED=$INSTALLED" >> $env:GITHUB_ENV
