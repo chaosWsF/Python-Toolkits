@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read FFmpeg version
         id: ffmpeg_version
+        shell: bash # Force Bash on all OSes
         run: |
           VERSION=$(cat ffmpeg_version.txt)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -51,6 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Read required FFmpeg version
+        shell: bash
         id: required_version
         run: |
           REQUIRED=$(cat ffmpeg_version.txt)
@@ -69,9 +71,10 @@ jobs:
       - name: Check FFmpeg version (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          LATEST=$(ffmpeg -version | head -n1 | awk '{print $3}')
-          echo "Latest FFmpeg (Chocolatey): $LATEST"
-          echo "LATEST=$LATEST" >> $GITHUB_ENV
+          $INSTALLED = (ffmpeg -version | Select-Object -First 1).Split()[2]
+          echo "INSTALLED=$INSTALLED" >> $env:GITHUB_ENV
+          echo "Installed FFmpeg version (winget): $INSTALLED"
+          echo "Required FFmpeg version: ${{ env.REQUIRED }}"
       - name: Create issue if outdated
         if: env.LATEST > env.REQUIRED
         uses: peter-evans/create-issue-from-file@v5
