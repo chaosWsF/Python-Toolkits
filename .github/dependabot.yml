@@ -1,9 +1,0 @@
-version: 2
-updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    version-updates: "security-only"
-    open-pull-requests-limit: 5
-    target-branch: "main"
