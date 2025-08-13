@@ -36,11 +36,11 @@ def merge_requirements(win_file, mac_file, output_file='requirements.txt'):
         if win_ver and mac_ver:    # Package in both files
             if win_ver == mac_ver:
                 merged[pkg] = win_ver
-            else:    # Compare versions and take the latest
+            else:    # Compare versions and take the minimum
                 try:
-                    latest_ver = max(version.parse(win_ver), version.parse(mac_ver))
-                    merged[pkg] = str(latest_ver)
-                    print(f"Warning: Version conflict for {pkg} - Win11: {win_ver}, macOS: {mac_ver}. Using {latest_ver}.")
+                    min_ver = min(version.parse(win_ver), version.parse(mac_ver))
+                    merged[pkg] = str(min_ver)
+                    print(f"Warning: Version conflict for {pkg} - Win11: {win_ver}, macOS: {mac_ver}. Using {min_ver}.")
                 except version.InvalidVersion:
                     print(f"Error: Invalid version for {pkg}. Win11: {win_ver}, macOS: {mac_ver}. Skipping.")
         elif win_ver:    # Only in Win11
