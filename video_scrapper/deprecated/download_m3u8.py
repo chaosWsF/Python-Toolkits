@@ -33,7 +33,7 @@ def progress_hook(d):
 parser = argparse.ArgumentParser(description="Download m3u8 with yt-dlp and aria2c")
 parser.add_argument('url', help='m3u8 URL')
 parser.add_argument('--aria2c-args', help='Arguments for aria2c', 
-                    default='-c -j 16 -x 1 --summary-interval=0')
+                    default='-c -j 16 -x 16 --summary-interval=0')
 args = parser.parse_args()
 
 ydl_opts = {

@@ -60,7 +60,7 @@ def video_links_generator(file_path):
     yield from cached_video_links_generator(file_path)
 
 if __name__ == '__main__':
-    aria2c_args = '-c -j 16 -x 1'
+    aria2c_args = '-c -j 16 -x 16'
     video_list = os.path.join(working_dir, 'video.csv')
     for name, url in video_links_generator(video_list):
         download_video(url, name, aria2c_args)
