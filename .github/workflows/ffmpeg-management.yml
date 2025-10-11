@@ -2,6 +2,7 @@ name: FFmpeg Management
 
 permissions:
   contents: write # Grant permission for dependency submission
+  dependency-graph: write
 
 on:
   push:
