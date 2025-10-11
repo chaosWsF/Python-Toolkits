@@ -127,3 +127,4 @@ pwd
 saved_posts/
 video.csv
 dependencies/
+.DS_Store
