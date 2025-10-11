@@ -3,7 +3,7 @@ from PIL import Image
 
 
 # List your .webp files
-image_folder = os.path.join(os.path.expanduser('~'), 'Downloads')
+image_folder = os.path.join(os.path.expanduser('~'), 'Downloads', 'Doujin')
 filenames = os.listdir(image_folder)
 image_format = ('.webp', 'WEBP', '.jpg', 'JPG', '.jpeg', 'JPEG', '.png', 'PNG')
 
