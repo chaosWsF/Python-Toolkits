@@ -6,6 +6,8 @@ import os
 def get_conda_packages(yaml_file='environment.yml'):
     """Get package names and versions from environment.yml."""
     packages = {}
+    name_exceptions = {'brotli-python': "brotli", 
+                       'importlib-metadata': "importlib_metadata"}    # conda-installed packages with different names in pip (lowercase)
     try:
         with open(yaml_file, 'r') as f:
             env_data = yaml.safe_load(f)
@@ -19,7 +21,11 @@ def get_conda_packages(yaml_file='environment.yml'):
                 if match:
                     name, version, _ = match.groups()
                     if version:  # Only include if version is specified
-                        packages[name] = version
+                        if name in name_exceptions:
+                            pip_name = name_exceptions[name]
+                            packages[pip_name] = version
+                        else:
+                            packages[name] = version
             elif isinstance(dep, dict) and 'pip' in dep:  # Pip-installed packages
                 for pip_dep in dep['pip']:
                     match = re.match(r'^([^=]+)=([\d\.]+)=([\w\d_]+)$', pip_dep)
