@@ -6,8 +6,8 @@ import os
 def get_conda_packages(yaml_file='environment.yml'):
     """Get package names and versions from environment.yml."""
     packages = {}
-    name_exceptions = {'brotli-python': "Brotli", 
-                       'importlib-metadata': "importlib_metadata"}    # conda-installed packages with different names in pip
+    name_exceptions = {'brotli-python': "brotli", 
+                       'importlib-metadata': "importlib_metadata"}    # conda-installed packages with different names in pip (lowercase)
     try:
         with open(yaml_file, 'r') as f:
             env_data = yaml.safe_load(f)
