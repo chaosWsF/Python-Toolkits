@@ -41,7 +41,7 @@ simple-websocket==1.1.0
 six==1.17.0
 tqdm==4.67.1
 typing_extensions==4.12.2
-urllib3==2.6.0
+urllib3==2.6.3
 websockets==13.1
 wsproto==1.2.0
 yt-dlp==2025.11.12
