@@ -12,9 +12,11 @@ bidict==0.23.1
 blinker==1.9.0
 brotli==1.2.0
 certifi==2025.1.31
+cffi==2.0.0
 charset-normalizer==3.3.2
 click==8.2.1
 colorama==0.4.6
+curl_cffi==0.13.0
 greenlet==3.1.1
 h11==0.16.0
 h2==4.3.0
@@ -22,7 +24,7 @@ hpack==4.1.0
 hyperframe==6.1.0
 idna==3.10
 importlib_metadata==8.5.0
-instaloader==4.14.1
+instaloader==4.15
 itsdangerous==2.2.0
 lxml==6.0.2
 mutagen==1.47.0
@@ -30,6 +32,7 @@ packaging==24.2
 pillow==11.1.0
 playwright==1.50.0
 playwright-stealth==1.0.6
+pycparser==2.23
 pycryptodomex==3.21.0
 pyee==12.1.1
 python-dotenv==1.0.1
@@ -44,5 +47,6 @@ typing_extensions==4.12.2
 urllib3==2.6.3
 websockets==13.1
 wsproto==1.2.0
-yt-dlp==2025.11.12
+yt-dlp==2025.12.8
+yt-dlp-ejs==0.3.2
 zipp==3.21.0

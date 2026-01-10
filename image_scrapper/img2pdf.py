@@ -17,5 +17,7 @@ for f in filenames:
             save_loc = os.path.join(image_folder, f + '.pdf')
             images[0].save(save_loc, save_all=True, append_images=images[1:])
             print(f"Converted {len(images)} images in {f} to PDF: {save_loc}")
+        else:
+            print(f"No images found in {f}.")
     else:
         print(f"Skipping {f}, not a directory.")
