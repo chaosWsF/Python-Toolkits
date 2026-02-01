@@ -1,4 +1,6 @@
 #!/bin/bash
+cd ~/Projects
+
 codes=(
   "Ddfjals"
   "aBcDeFg"

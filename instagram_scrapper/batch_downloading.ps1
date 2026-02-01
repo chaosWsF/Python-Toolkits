@@ -1,7 +1,9 @@
+Set-Location ~
+Set-Location '.\Pictures\Saved Pictures'
+
 $codes = @(
-    "Ddfjals"
-    "aBcDeFg"
-    "XyZ1234"
+    "DUOCKDAkrvj"
+    "DUNxe_vgVkI"
 )
 
 foreach ($code in $codes) {
