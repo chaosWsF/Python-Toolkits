@@ -2,7 +2,6 @@ name: FFmpeg Management
 
 permissions:
   contents: write # Grant permission for dependency submission
-  dependency-graph: write
 
 on:
   push:
@@ -72,6 +71,9 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
+    env:
+      LATEST: ''
+      REQUIRED: ''
     steps:
       - uses: actions/checkout@v4
       - name: Read required FFmpeg version
@@ -100,7 +102,7 @@ jobs:
           echo "Installed FFmpeg version (winget): $INSTALLED"
           echo "Required FFmpeg version: ${{ env.REQUIRED }}"
       - name: Create issue if outdated
-        if: env.LATEST > env.REQUIRED
+        if: env.LATEST != '' && env.LATEST > env.REQUIRED
         uses: peter-evans/create-issue-from-file@v5
         with:
           title: "FFmpeg version outdated"
