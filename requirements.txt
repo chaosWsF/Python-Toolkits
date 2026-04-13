@@ -29,7 +29,7 @@ itsdangerous==2.2.0
 lxml==6.0.2
 mutagen==1.47.0
 packaging==24.2
-pillow==12.1.1
+pillow==12.2.0
 playwright==1.50.0
 playwright-stealth==1.0.6
 pycparser==2.23
