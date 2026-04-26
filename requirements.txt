@@ -35,7 +35,7 @@ playwright-stealth==1.0.6
 pycparser==2.23
 pycryptodomex==3.21.0
 pyee==12.1.1
-python-dotenv==1.0.1
+python-dotenv==1.2.2
 python-engineio==4.11.2
 python-socketio==5.14.3
 requests==2.33.0
