@@ -48,7 +48,7 @@ with YoutubeDL(ydl_opts) as ydl:
     info = ydl.extract_info(args.url, download=False)
     title = info['title']   
     safe_title = sanitize_filename(title, restricted=True)    # Sanitize title to ensure it’s a valid folder name
-    dir_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'Videos', safe_title)
+    dir_path = os.path.join('D:\\', 'Saved', 'Videos', safe_title)    # [ ] Consider to use ENV or config file for different OS
     os.makedirs(dir_path, exist_ok=True)
     ydl.params['outtmpl'] = os.path.join(dir_path, '%(title)s.%(ext)s')
 
