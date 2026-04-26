@@ -3,7 +3,7 @@ from PIL import Image
 
 
 # List your images
-image_folder = os.path.join(os.path.expanduser('~'), 'Downloads', 'Doujin_New')
+image_folder = os.path.join('D:\\', 'Saved', 'Doujin_New')    # [ ] Consider to use ENV or config file for different OS
 filenames = os.listdir(image_folder)
 image_format = ('.webp', 'WEBP', '.jpg', 'JPG', '.jpeg', 'JPEG', '.png', 'PNG')
 

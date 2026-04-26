@@ -101,7 +101,7 @@ def download_video(url, aria2c_args):
             info = ydl.extract_info(url, download=False)
             title = info.get('title', 'unknown_video')    # Fallback if title is missing
             safe_title = sanitize_filename(title, restricted=True)
-            dir_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'Videos', safe_title)
+            dir_path = os.path.join('D:\\', 'Saved', 'Videos', safe_title)    # [ ] Consider to use ENV or config file for different OS
             os.makedirs(dir_path, exist_ok=True)
         
         ydl_opts['outtmpl'] = {
