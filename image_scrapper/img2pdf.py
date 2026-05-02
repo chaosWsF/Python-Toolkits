@@ -15,7 +15,7 @@ for f in filenames:
         if image_files:
             images = [Image.open(image_f).convert('RGB') for image_f in image_files]
             save_loc = os.path.join(image_folder, f + '.pdf')
-            images[0].save(save_loc, save_all=True, append_images=images[1:])
+            images[0].save(save_loc, save_all=True, append_images=images[1:], format='PDF')
             print(f"Converted {len(images)} images in {f} to PDF: {save_loc}")
         else:
             print(f"No images found in {f}.")
