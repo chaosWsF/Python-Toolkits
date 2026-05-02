@@ -2,10 +2,10 @@ Set-Location ~
 Set-Location '.\Pictures\Saved Pictures'
 
 $codes = @(
-    "DUOCKDAkrvj"
-    "DUNxe_vgVkI"
+    "DXzNMZhk3Wl"
+    "DX1cbH1GMSR"
 )
 
 foreach ($code in $codes) {
-    instaloader -- -$code
+    instaloader --no-videos --no-captions --no-metadata-json -- -$code
 }
