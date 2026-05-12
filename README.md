@@ -1,12 +1,14 @@
 # Python Toolkits
 
-A collection of Python-based utilities for password generation, web scraping, and media processing. Detailed documentation, including setup and usage guides, is available in the [Wiki](https://github.com/chaosWsF/Python-Toolkits/wiki).
+A collection of Python-based utilities for password generation, web scraping, and media processing. 
+
+[Documentation](https://github.com/chaosWsF/Python-Toolkits/wiki)
 
 ## Installation
 
 1. **Prerequisites**:
-   - Python >= 3.9
-   - `ffmpeg` >= 6.0:
+   - Python $\geq$ 3.10
+   - `ffmpeg` $\geq$ 8.1:
      - **macOS**: `brew install ffmpeg`
      - **Windows**: `winget install Gyan.FFmpeg`
 
