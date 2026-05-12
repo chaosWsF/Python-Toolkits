@@ -10,7 +10,7 @@ A collection of Python-based utilities for password generation, web scraping, an
    - Python $\geq$ 3.10
    - `ffmpeg` $\geq$ 8.1:
      - **macOS**: `brew install ffmpeg`
-     - **Windows**: `winget install Gyan.FFmpeg`
+     - **Windows**: `winget install -e --id Gyan.FFmpeg`
 
 2. **Install Python Dependencies**:
    ```bash
