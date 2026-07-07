@@ -6,11 +6,7 @@ from PIL import Image
 
 
 def get_image_folder() -> Path:
-    """Return the image folder path from ENV or config file."""
-    env_path = os.getenv('IMAGE_FOLDER')
-    if env_path:
-        return Path(env_path)
-
+    """Return the image folder path from config file."""
     config_path = Path(__file__).resolve().parent / 'img2pdf_config.json'
     if config_path.exists():
         try:
@@ -27,12 +23,12 @@ def get_image_folder() -> Path:
 
         raise RuntimeError(
             'Config file found but no path for current platform. '
-            'Use IMAGE_FOLDER env var or add a platform key in img2pdf_config.json.'
+            'Add a platform key in img2pdf_config.json.'
         )
 
     raise RuntimeError(
-        'No IMAGE_FOLDER environment variable set and no img2pdf_config.json file found. '
-        'Create img2pdf_config.json or set IMAGE_FOLDER.'
+        'No img2pdf_config.json file found. '
+        'Create img2pdf_config.json.'
     )
 
 
