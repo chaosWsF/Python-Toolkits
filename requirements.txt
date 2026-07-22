@@ -48,7 +48,7 @@ python-socketio==5.16.2
 pywin32==311
 requests==2.33.1
 rich==15.0.0
-setuptools==80.9.0
+setuptools==83.0.0
 shadowcopy==0.0.4
 simple-websocket==1.1.0
 six==1.17.0
