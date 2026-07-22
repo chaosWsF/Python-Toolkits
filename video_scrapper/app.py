@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import sys
 import re
 import threading
@@ -13,6 +14,7 @@ load_dotenv()
 
 secret_key = os.getenv('FLASK_SECRET_KEY')
 port = int(os.getenv('FLASK_PORT', 5000))    # Default to 5000 if not set
+download_folder_var = os.getenv('DOWNLOAD_FOLDER')
 
 # Initialize Flask app and SocketIO
 app = Flask(__name__)
@@ -101,11 +103,11 @@ def download_video(url, aria2c_args):
             info = ydl.extract_info(url, download=False)
             title = info.get('title', 'unknown_video')    # Fallback if title is missing
             safe_title = sanitize_filename(title, restricted=True)
-            dir_path = os.path.join('D:\\', 'Saved', 'Videos', safe_title)    # [ ] Consider to use ENV or config file for different OS
+            dir_path = Path(download_folder_var) / safe_title
             os.makedirs(dir_path, exist_ok=True)
         
         ydl_opts['outtmpl'] = {
-            'default': os.path.join(dir_path, '%(title)s.%(ext)s')
+            'default': dir_path / '%(title)s.%(ext)s'
         }
         
         with YoutubeDL(ydl_opts) as ydl:

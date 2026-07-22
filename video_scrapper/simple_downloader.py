@@ -1,6 +1,8 @@
 import os
 import csv
 import logging
+from pathlib import Path
+from dotenv import load_dotenv
 from functools import lru_cache
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import sanitize_filename
@@ -17,6 +19,19 @@ logging.basicConfig(
 )
 
 
+def set_download_folder() -> Path:
+    """Return the download folder path from ENV or config file."""
+    load_dotenv()
+    env_path = os.getenv('DOWNLOAD_FOLDER')
+    if env_path:
+        return Path(env_path)
+
+    raise RuntimeError(
+        'No DOWNLOAD_FOLDER environment variable set. '
+        'Set DOWNLOAD_FOLDER.'
+    )
+
+
 def download_video(url, name, aria2c_args):
     """Download function to download video from URL"""
     ydl_opts = {
@@ -29,11 +44,14 @@ def download_video(url, name, aria2c_args):
         title = info.get('title', 'unknown_video')
         ext = info.get('ext', 'mp4')
         safe_title = sanitize_filename(title, restricted=True)
-        dir_path = os.path.join('D:\\', 'Saved', 'Videos', safe_title)    # [ ] Consider to use ENV or config file for different OS
+        download_folder = set_download_folder()
+        if not download_folder.exists():
+            raise FileNotFoundError(f'Download folder does not exist: {download_folder}')
+        dir_path = download_folder / safe_title
         os.makedirs(dir_path, exist_ok=True)
     
     safe_name = sanitize_filename(name, restricted=True)
-    file_path = os.path.join(dir_path, f'{safe_name}.{ext}')
+    file_path = dir_path / f'{safe_name}.{ext}'
     logging.info(f'Downloading to {file_path}')
     ydl_opts['outtmpl'] = {'default': file_path}
 
