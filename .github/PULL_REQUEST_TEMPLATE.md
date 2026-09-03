@@ -1,14 +1,14 @@
 # Pull Request
 
-**Description**
+## Description
 
 What does this change do?
 
-**Related Issue**
+## Related Issue
 
 Link to issue (e.g., #1).
 
-**Testing**
+## Testing
 
 - [ ] Tested on Windows 11
-- [ ] Tested on macOS M1
+- [ ] Tested on macOS
