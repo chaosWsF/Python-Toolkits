@@ -1,12 +1,14 @@
 #!/bin/bash
-cd ~/Projects
+cd ~/Pictures || exit 1
 
 codes=(
-  "Ddfjals"
-  "aBcDeFg"
-  "XyZ1234"
+  "DcneDecEu9s"
+  "Dcle75vIxgF"
+  "Dcx8JADCVAR"
+  "DcnpTEjEWt1"
+  "DcnDbvCDzFL"
 )
 
 for code in "${codes[@]}"; do
-  instaloader -- -"$code"
+  instaloader --no-videos --no-captions --no-metadata-json -- -"$code"
 done
