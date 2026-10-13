@@ -8,7 +8,7 @@ PySocks==1.7.1
 PyYAML==6.0.2
 Pygments==2.20.0
 WMI==1.5.1
-Werkzeug==3.1.6
+Werkzeug==3.1.9
 backports.zstd==1.1.0
 beautifulsoup4==4.14.3
 bidict==0.23.1
