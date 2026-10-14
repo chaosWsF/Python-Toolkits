@@ -5,7 +5,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 from functools import lru_cache
 from yt_dlp import YoutubeDL
+from yt_dlp.networking.impersonate import ImpersonateTarget
 from yt_dlp.utils import sanitize_filename
+
 
 working_dir = 'video_scrapper'
 logs_path = os.path.join(working_dir, 'download.log')
@@ -35,8 +37,29 @@ def set_download_folder() -> Path:
 def download_video(url, name, aria2c_args):
     """Download function to download video from URL"""
     ydl_opts = {
-            'external_downloader': 'aria2c',
-            'external_downloader_args': aria2c_args.split(),
+            # XXX on demand js-runtime or impersonate
+            # 'js_runtimes': {
+            #     'deno': {}
+            # },
+            # 'impersonate': ImpersonateTarget.from_str('chrome'),
+            # 'http_headers': {
+            #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+            #     'Accept': '*/*',
+            #     'Accept-Language': 'en-US,en;q=0.9',
+            # },
+
+            # XXX live-streaming
+            # 'hls_use_mpegts': True,              # 使用 mpegts 容器强行写入，提升分片拼接容错
+            # 'http_chunk_size': 1048576,          # 显式指定 1MB 传输块，规避 Socket 中途超时
+            # 'concurrent_fragment_downloads': 4,
+            # 'fragment_retries': 10,
+            # 'skip_unavailable_fragments': False,
+            # 'file_access_retries': 5,
+            # 'retry_sleep_functions': {'fragment': lambda n: 1},
+
+            # XXX only MP4/MKV
+            # 'external_downloader': 'aria2c',
+            # 'external_downloader_args': aria2c_args.split(),
     }
 
     with YoutubeDL(ydl_opts) as ydl:
@@ -53,7 +76,8 @@ def download_video(url, name, aria2c_args):
     safe_name = sanitize_filename(name, restricted=True)
     file_path = dir_path / f'{safe_name}.{ext}'
     logging.info(f'Downloading to {file_path}')
-    ydl_opts['outtmpl'] = {'default': file_path}
+
+    ydl_opts['outtmpl'] = {'default': str(file_path)}
 
     logging.info(f"Starting to download {name}")
     try:
@@ -76,6 +100,7 @@ def cached_video_links_generator(file_path):
 
 def video_links_generator(file_path):
     yield from cached_video_links_generator(file_path)
+
 
 if __name__ == '__main__':
     aria2c_args = '-c -j 16 -x 16'
