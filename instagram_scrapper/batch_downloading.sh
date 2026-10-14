@@ -2,11 +2,12 @@
 cd ~/Pictures || exit 1
 
 codes=(
-  "DcneDecEu9s"
-  "Dcle75vIxgF"
-  "Dcx8JADCVAR"
-  "DcnpTEjEWt1"
-  "DcnDbvCDzFL"
+  "Da__IucD5R3"
+  "DapwUH9yGQf"
+  "Dal0tx-E_Kx"
+  "DF4J7WrMSjELg3SxuCqXCduk-ImTAngDG1gLn00"
+  "DYUHMEytljO"
+  "DYJKBzmnVj0"
 )
 
 for code in "${codes[@]}"; do

@@ -38,23 +38,24 @@ def download_video(url, name, aria2c_args):
     """Download function to download video from URL"""
     ydl_opts = {
             # XXX on demand js-runtime or impersonate
-            'js_runtimes': {
-                'deno': {}
-            },
+            # 'js_runtimes': {
+            #     'deno': {}
+            # },
             # 'impersonate': ImpersonateTarget.from_str('chrome'),
-            'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-                'Accept': '*/*',
-                'Accept-Language': 'en-US,en;q=0.9',
-            },
+            # 'http_headers': {
+            #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+            #     'Accept': '*/*',
+            #     'Accept-Language': 'en-US,en;q=0.9',
+            # },
 
-            'hls_use_mpegts': True,              # 使用 mpegts 容器强行写入，提升分片拼接容错
-            'http_chunk_size': 1048576,          # 显式指定 1MB 传输块，规避 Socket 中途超时
-            'concurrent_fragment_downloads': 4,
-            'fragment_retries': 10,
-            'skip_unavailable_fragments': False,
-            'file_access_retries': 5,
-            'retry_sleep_functions': {'fragment': lambda n: 1},
+            # XXX live-streaming
+            # 'hls_use_mpegts': True,              # 使用 mpegts 容器强行写入，提升分片拼接容错
+            # 'http_chunk_size': 1048576,          # 显式指定 1MB 传输块，规避 Socket 中途超时
+            # 'concurrent_fragment_downloads': 4,
+            # 'fragment_retries': 10,
+            # 'skip_unavailable_fragments': False,
+            # 'file_access_retries': 5,
+            # 'retry_sleep_functions': {'fragment': lambda n: 1},
 
             # XXX only MP4/MKV
             # 'external_downloader': 'aria2c',
