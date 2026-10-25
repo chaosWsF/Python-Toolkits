@@ -15,7 +15,7 @@ bidict==0.23.1
 blinker==1.9.0
 brotli==1.2.0
 browser-cookie3==0.20.1
-certifi==2025.1.31
+certifi==2026.10.19
 cffi==2.0.0
 charset-normalizer==3.3.2
 click==8.2.1
