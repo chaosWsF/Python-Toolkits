@@ -13,7 +13,7 @@ backports.zstd==1.1.0
 beautifulsoup4==4.14.3
 bidict==0.23.1
 blinker==1.9.0
-brotli==1.2.0
+brotli==1.2.1
 browser-cookie3==0.20.1
 certifi==2026.10.19
 cffi==2.0.0
